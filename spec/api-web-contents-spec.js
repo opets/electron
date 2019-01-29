@@ -230,19 +230,16 @@ describe('webContents module', () => {
 
   describe('ServiceWorker APIs', () => {
     it('can successfully check for presence of a ServiceWorker', async () => {
-      await w.loadFile(path.join(fixtures, 'api', 'service-worker', 'service-worker.html'))
-      const hasSW = await w.webContents.hasServiceWorker()
+      const urlPath = path.join(fixtures, 'api', 'service-worker', 'service-worker.html')
+      await w.loadFile(urlPath)
+      const hasSW = await w.webContents.hasServiceWorker(urlPath)
       expect(hasSW).to.be.true()
     })
 
-    it('throws properly for invalid url', async () => {
-      const promise = w.webContents.hasServiceWorker()
-      return expect(promise).to.be.eventually.rejectedWith(Error, 'URL invalid or not yet loaded.')
-    })
-
     it('can successfully check for presence of a ServiceWorker (callback)', (done) => {
-      w.loadFile(path.join(fixtures, 'api', 'service-worker', 'service-worker.html')).then(() => {
-        w.webContents.hasServiceWorker(hasSW => {
+      const urlPath = path.join(fixtures, 'api', 'service-worker', 'service-worker.html')
+      w.loadFile(path.join(urlPath)).then(() => {
+        w.webContents.hasServiceWorker(urlPath, hasSW => {
           expect(hasSW).to.be.true()
           done()
         })
